@@ -100,7 +100,7 @@ $('.find-hw-with-id').on('click', () => {
         const homeworkData = JSON.parse(data.content)
         console.log(homeworkData)
         if (snapshot.exists()) {
-            const isOwner = data.creatorUid === auth.currentUser.uid
+            const isOwner = auth.currentUser && data.creatorUid === auth.currentUser.uid
             if (isOwner) {
                 alertModal("你是這個聯絡簿的創作著，請問你要做什麼?", [
                     {
