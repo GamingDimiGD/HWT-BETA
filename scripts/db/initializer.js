@@ -89,6 +89,8 @@ const createAccount = async (email, password) => {
     } catch (error) {
         if (error.message === 'Firebase: Password should be at least 6 characters (auth/weak-password).') alertModal("密碼必須大於6個字元!")
         else if (error.message === "Firebase: Error (auth/invalid-email).") alertModal('電子郵件不完整!')
+        else if (error.message === 'Firebase: Error (auth/email-already-in-use).') alertModal('電子郵件已經被其他帳號使用了!')
+        else alertModal("錯誤: " + error.message)
         throw error;
     }
 }
