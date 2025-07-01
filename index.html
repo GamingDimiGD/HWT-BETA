@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- cdnjs lib -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jStorage/0.4.12/jstorage.js"
+        integrity="sha512-/xG2u1+39ezvrTHLgDuWJ07cIOJdBgYxOQ8s/2DkeRWInLMfe4aLBe/5Zd8ECpY/uBKsdY+i1xOEGG4a6RnXHA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://kit.fontawesome.com/fbd704794c.js" crossorigin="anonymous"></script>
+    <meta name="google-site-verification" content="lmqOyZl2ZCg2ATRUYIP1qIZ1adBDBNPqyu3do0aHNjo" />
+
+    <meta name="description" content="抄聯絡簿神器是一個很好用的一個工具，可以取代使用黑板而用打字的方式來寫出今天有的作業。">
+    <meta name="keywords" content="聯絡簿, 抄聯絡簿, 神器, 抄聯絡簿神器, 作業, 抄">
+    <meta name="author" content="遊戲迪米">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="scripts/script.js" defer type="module"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <link rel="icon" href="img/HWT.png" type="image/png">
+    <title>HWT 抄聯絡簿神器</title>
+</head>
+
+<body>
+    <div class="loading-screen">
+        <h1>
+            <img src="./img/HWT.png" alt="HWT">
+            抄聯絡簿神器
+        </h1>
+    </div>
+    <h1 class="today">民國<b class="num y">X</b>年<b class="num m">X</b>月<b class="num d">X</b>日 星期<b class="num day">X</b>
+    </h1>
+    <div class="input-container">
+        <input type="text" class="hw-input" placeholder="輸入作業">
+        <button class="add-btn">+</button>
+        <button class="fast-button" onclick="$('.fast-enter').addClass('show')"><i
+                class="fa-solid fa-star"></i></button>
+    </div>
+    <div class="hw-container">
+    </div>
+    <div class="bottom-left-buttons">
+        <button class="exit-preview" hidden>
+            退出預覽
+        </button>
+        <button class="cloud-hw-lists beta" onclick="$('.cloud-hw-list').addClass('show')">
+            <b class="unbold">
+                雲端聯絡簿
+            </b>
+        </button>
+        <button class="logout" hidden>
+            登出
+        </button>
+        <button class="login" onclick="$('.account.modal').addClass('show')">
+            登入
+        </button>
+        <button class="settings" onclick="$('.options.modal').addClass('show')">
+            <i class="fa-solid fa-sliders"></i>
+        </button>
+        <button class="clear">清除全部</button>
+    </div>
+    <div class="modal hw-options">
+        <div class="content">
+            <h2>作業設定</h2>
+            <div class="option-list">
+                <button class="remove"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
+                <button class="edit"><i class="fa-solid fa-pen" aria-hidden="true"></i></button>
+                <input type="color" class="color" value="#ffffff"><br>
+                <div class="arrows">
+                    <button class="left">
+                        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <button class="right">
+                        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <button class="out">關閉</button>
+    </div>
+    <div class="modal edit-hw">
+        <div class="content">
+            <h2>編輯作業</h2>
+            <input type="text" class="edit-input">
+            <div class="input-options">
+                <button class="save-btn">儲存</button>
+                <button class="cancel-btn">取消</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fast-enter">
+        <div class="content">
+            <h2>快速輸入</h2>
+            <select name="type" id="type">
+                <option value="">作業 (默認) </option>
+                <option value="考">考試</option>
+                <option value="看">閱讀/觀看</option>
+                <option value="訂正">訂正</option>
+                <option value="簽">簽名</option>
+                <option value="訂簽">訂簽</option>
+                <option value="帶">帶</option>
+            </select>
+            <select name="subject" id="subject">
+                <option value="">選擇作業科目</option>
+                <option value="國">國文</option>
+                <option value="數">數學</option>
+                <option value="英">英文</option>
+                <option value="自">自然</option>
+                <option value="生">生物</option>
+                <option value="理">理化</option>
+                <option value="地科">地科</option>
+                <option value="社">社會</option>
+                <option value="歷">歷史</option>
+                <option value="地">地理</option>
+                <option value="公">公民</option>
+                <option value="物">物理</option>
+                <option value="化">化學</option>
+            </select>
+            <!-- DO NOT ABBREVIATE THIS -->
+            <select name="choose-book-type" id="choose-book-type">
+                <option value="">選作業本類別</option>
+                <option value="課">課本</option>
+                <option value="習">習作</option>
+                <option value="講">講義</option>
+                <option value="自">自修</option>
+                <option value="卷">考卷/練習卷</option>
+                <option value="小卷">小卷</option>
+                <option value="大卷">大卷</option>
+                <option value="白卷">白卷</option>
+                <option value="學單">學習單</option>
+            </select>
+            <button class="toggle-range-mode">
+                切換範圍模式
+            </button>
+            <div class="page-range">
+                <label for="page-from">P.</label><input type="number" min="0" id="page-from">
+                <label for="page-to">~ P.</label><input type="number" min="0" id="page-to">
+            </div>
+            <div class="custom-range">
+                <input type="text" id="custom-range-input" placeholder="輸入範圍">
+            </div>
+            單面的話第二個頁數不用輸入
+            <button class="submit-fe">送出</button>
+        </div>
+        <button class="out">離開</button>
+    </div>
+    <div class="options modal">
+        <div class="content">
+            <h1>選項</h1>
+            <div class="option-display">
+                <div>
+                    <input type="checkbox" name="unsafe-input" id="unsafe-input" data-default="false"
+                        autocomplete="off">
+                    <b>不安全輸入</b>
+                </div>
+                <div>
+                    <input type="checkbox" name="to全形" id="to全形" data-default="true" autocomplete="off">
+                    <b>自動轉全形</b>
+                </div>
+                <div>
+                    <input type="checkbox" id="smaller-space" name="smaller-space" data-default="false"
+                        autocomplete="off">
+                    <b>橫寫的空格</b>
+                </div>
+                <div>
+                    <input type="checkbox" id="escape-char" name="escape-char" data-default="true" autocomplete="off">
+                    <b>文字標記</b><button class="more-info-button" onclick="$('.escape-char-cheatsheet').addClass('show')">
+                        <i class="fa-solid fa-circle-question"></i>
+                    </button>
+                </div>
+                <button onclick="$('.edit-fast-enter').addClass('show')">
+                    自訂快速輸入
+                </button>
+                <b class="text-size-display">文字大小:</b>
+                <input type="range" class="change-text-size" min="0.01" max="5" step="0.01">
+                <div class="step-buttons-ts">
+                    <button class="decrease"><i class="fa-solid fa-minus"></i></button>
+                    <button class="increase"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+        <button class="out">儲存並離開</button>
+    </div>
+    <div class="escape-char-cheatsheet modal">
+        <div class="content">
+            <h1>文字標記一覽</h1>
+            *括號型標記裡面不可包含其他括號型標記，違反此規則的文字會被隱藏
+            <div class="cheatsheet-display">
+            </div>
+        </div>
+        <button class="out">離開</button>
+    </div>
+    <div class="edit-fast-enter modal">
+        <div class="content">
+            <h1>自訂快速輸入</h1>
+
+            <b id="c-type-display">自訂作業動作: </b>
+            <div class="efe-container" id="edit-fe-type">
+                <input type="text" placeholder="新增作業動作"><button>新增</button>
+            </div>
+
+            <b id="c-subject-display">自訂科目: </b>
+            <div class="efe-container" id="edit-fe-subject">
+                <input type="text" placeholder="新增科目"><button>新增</button>
+            </div>
+
+            <b id="c-book-type-display">自訂作業本: </b>
+            <div class="efe-container" id="edit-fe-book-type">
+                <input type="text" placeholder="新增作業本"><button>新增</button>
+            </div>
+
+        </div>
+        <button class="out">離開</button>
+    </div>
+    <div class="account modal">
+        <div class="content">
+            <div id="auth-ui">
+                <h2>登入</h2>
+                <input type="email" id="email-input" placeholder="電子郵件">
+                <input type="password" id="password-input" placeholder="密碼">
+                <button id="confirm-login">登入</button>
+                <button id="create-account">建立新帳號</button>
+                <p id="userStatus"></p>
+            </div>
+        </div>
+        <button class="out">離開</button>
+    </div>
+    <div class="cloud-hw-list modal">
+        <div class="content">
+            <h1>雲端聯絡簿</h1>
+            <button class="account-info" onclick="$('.account-info.modal').addClass('show')">帳號資訊</button>
+            <button class="get-id-list">你的代碼</button>
+            <button class="open-upload-modal" onclick="$('.upload-hw-list.modal').addClass('show')">上傳聯絡簿</button>
+            <button class="find-hw-with-id">輸入代碼</button>
+        </div>
+        <button class="out">離開</button>
+    </div>
+    <div class="upload-hw-list modal">
+        <div class="content">
+            <h1>上傳聯絡簿</h1>
+            <p class="warning">⚠️你的聯絡簿的內容*任何擁有代碼的人*都看得到它，請勿放任何私人資訊。</p>
+            <div class="g-recaptcha" data-sitekey="6LdZYHIrAAAAACocYQPJvVfFXnuCdPgW9Gvxc930"></div>
+            <button class="upload-hw">上傳聯絡簿</button>
+        </div>
+        <button class="out">離開</button>
+    </div>
+    
+    <div class="account-info modal">
+        <div class="content">
+            <h1>帳號</h1>
+            <b id="uid-display"></b>
+            <button class="reset-password">重設密碼</button>
+        </div>
+        <button class="out">離開</button>
+    </div>
+
+</body>
+
+</html>
