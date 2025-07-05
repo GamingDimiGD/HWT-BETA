@@ -26,11 +26,6 @@ $('.get-id-list').on("click", () => {
 })
 
 $('.upload-hw').on('click', async () => {
-    const recaptchaResponse = grecaptcha.getResponse();
-    if (!recaptchaResponse) {
-        alertModal("請先完成驗證（我不是機器人）");
-        return;
-    }
     let content = homeworkList
     if (!content) return alertModal("請先輸入聯絡簿!");
     if (content.length > 15) return alertModal("作業太多了! 最多15項作業!");
@@ -68,16 +63,14 @@ $('.upload-hw').on('click', async () => {
             alertModal("已上傳聯絡簿! 請記下代碼:<pre>" + newHomeworkId + "</pre>");
             console.log("ID:", newHomeworkId);
             updateDayAndSave()
-            grecaptcha.reset();
             $('.upload-hw-list').removeClass('show')
             await set(ref(db, 'users/' + user.uid + '/lastUpload'), Date.now());
             await set(ref(db, 'users/' + user.uid + '/ids/' + newHomeworkId), true);
             return newHomeworkId;
         } catch (error) {
             console.error("Error creating homework list:", error);
-            if (error.message === "PERMISSION_DENIED: Permission denied") alertModal("不遵守規定的動作!");
+            if (error.message === "PERMISSION_DENIED: Permission denied") alertModal("違法動作!");
             else alertModal("錯誤: " + error.message);
-            grecaptcha.reset();
             $('.upload-hw-list').removeClass('show')
         }
     } else {
