@@ -299,7 +299,16 @@ $('.submit-fe').on('click', () => {
     return;
 })
 
+if (window.location.toString() === "https://gamingdimigd.github.io/HWT-BETA/" || window.location.toString() === "http://127.0.0.1:5500/") alertModal('歡迎來到抄聯絡簿神器測試版! 可能會有一些Bug要修復。', [
+    "OK", {
+        text: '我要回去',
+        onclick: () => {
+            window.location.href = "https://gamingdimigd.github.io/HWT/"
+        }
+    }
+])
+
 import { app, analytics, auth, db } from "./db/initializer.js"
 import {} from "./db/upload.js"
 
-if(app, analytics, auth, db) console.log('DB loaded!')
+if (app, analytics, auth, db) console.log('DB loaded!')
