@@ -12,6 +12,15 @@ import {
     get
 } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js';
 
+const generateRandomID = (length = 8) => {
+    const idSymbols = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    let id = ''
+    for (let i = 0; i < length; i++) {
+        id += idSymbols[Math.floor(Math.random() * idSymbols.length)]
+    }
+    return id
+}
+
 $('.get-id-list').on("click", () => {
     const user = auth.currentUser
     if (!user) return alertModal('請先登入!')
@@ -48,9 +57,18 @@ $('.upload-hw').on('click', async () => {
     }
 
 
-    const homeworksRef = ref(db, 'homework_lists');
-    const newHomeworkRef = push(homeworksRef);
-    const newHomeworkId = newHomeworkRef.key;
+    let newHomeworkId = generateRandomID();
+    let newHomeworkRef = ref(db, 'homework_lists/' + newHomeworkId);
+    let exists = true;
+    let snapshot = await get(newHomeworkRef)
+    exists = snapshot.exists()
+    console.log(exists)
+    while (exists) {
+        newHomeworkId = generateRandomID()
+        newHomeworkRef = ref(db, 'homework_lists/' + newHomeworkId);
+        snapshot = await get(newHomeworkRef)
+        exists = snapshot.exists();
+    }
 
     if (newHomeworkId) {
         const homeworkData = {
