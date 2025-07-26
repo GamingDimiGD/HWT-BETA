@@ -329,7 +329,7 @@ details {
     font-size: 1.3rem;
 }
 
-.alert-modal pre {
+.alert-modal pre, .user-id-list pre {
     font-size: 0.85rem !important;
     font-family: "Source Code Pro", monospace;
     background-color: #00000020;
@@ -374,4 +374,32 @@ details {
 
 .beta:hover > .unbold::before {
     top: -15px;
+}
+
+.user-id-list div {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+.user-id-list div pre {
+    width: 100%;
+}
+
+.loading-modal {
+    z-index: 1000;
+}
+.loading-modal .content {
+    width: unset;
+}
+.loading-modal img {
+    animation: rotate 0.7s ease infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

@@ -1,4 +1,4 @@
-import { alertModal } from '../modal.js';
+import { alertModal, loadingModal } from '../modal.js';
 import { db, auth } from './initializer.js'
 import { homeworkList, hwt, updateDayAndSave } from '../script.js';
 import { preview } from '../preview.js';
@@ -24,13 +24,35 @@ const generateRandomID = (length = 8) => {
 $('.get-id-list').on("click", () => {
     const user = auth.currentUser
     if (!user) return alertModal('請先登入!')
-    get(ref(db, 'users/' + user.uid + "/ids")).then(async snapshot => {
-        if (!snapshot.exists()) return alertModal('你沒有任何代碼')
+    $('.user-id-list').empty()
+    let loading = loadingModal()
+    get(ref(db, 'users/' + user.uid + "/ids")).then(snapshot => {
+        if (!snapshot.exists()) {
+            loading.hide()
+            return alertModal('你沒有任何代碼')
+        }
         const list = Object.keys(snapshot.val())
-        alertModal('你擁有的代碼: <pre>' + list.join('</pre><pre>') + '</pre>')
+        console.log(list)
+        list.forEach(async key => {
+            let idDisplay = $('<div><pre></pre><button id="configure-hw"><i class="fa-solid fa-wrench"></i></button><button id="copy-hw"><i class="fa-regular fa-copy"></i></button></div>')
+            $('.user-id-list').append(idDisplay)
+            idDisplay.find('pre').text(key)
+            idDisplay.find('#configure-hw').on("click", () => findHWwithID(key))
+            idDisplay.find("#copy-hw").on("click", async () => {
+                let loading = loadingModal()
+                await navigator.clipboard.writeText(key)
+                    .then(() => alertModal('複製成功!'))
+                    .catch(error => alertModal('複製失敗: ' + error.message))
+                loading.hide()
+            })
+            idDisplay.attr('data-id', key)
+        })
+        $('.user-ids').addClass('show')
+        loading.hide()
     }).catch((error) => {
         alertModal("錯誤: " + error.message);
         console.error("Error getting id's:", error);
+        $('.user-id-list').addClass('show')
     });
 })
 
@@ -55,7 +77,7 @@ $('.upload-hw').on('click', async () => {
         alertModal('請先登入帳號!')
         return;
     }
-
+    const loading = loadingModal()
 
     let newHomeworkId = generateRandomID();
     let newHomeworkRef = ref(db, 'homework_lists/' + newHomeworkId);
@@ -84,6 +106,7 @@ $('.upload-hw').on('click', async () => {
             $('.upload-hw-list').removeClass('show')
             await set(ref(db, 'users/' + user.uid + '/lastUpload'), Date.now());
             await set(ref(db, 'users/' + user.uid + '/ids/' + newHomeworkId), true);
+            loading.hide();
             return newHomeworkId;
         } catch (error) {
             console.error("Error creating homework list:", error);
@@ -91,19 +114,28 @@ $('.upload-hw').on('click', async () => {
             else alertModal("錯誤: " + error.message);
             $('.upload-hw-list').removeClass('show')
         }
+        loading.hide();
     } else {
         console.error("Failed to generate a new homework ID.");
+        alertModal("未知錯誤!");
+        loading.hide();
     }
 
 })
 
 $('.find-hw-with-id').on('click', () => {
-    let homeworkId = prompt('輸入作業代碼')
+    let homeworkId = prompt('輸入作業代碼 (不用注意大小寫)').toUpperCase()
+    findHWwithID(homeworkId)
+})
+
+const findHWwithID = (homeworkId) => {
+    const loading = loadingModal()
     const homeworkRef = ref(db, `homework_lists/${homeworkId}`);
     get(homeworkRef).then(async (snapshot) => {
         if (!snapshot.exists()) {
             alertModal('沒有擁有這個代碼的作業!');
             console.log(`No homework list found with ID: ${homeworkId}`);
+            loading.hide()
             return;
         }
         const data = snapshot.val();
@@ -134,7 +166,7 @@ $('.find-hw-with-id').on('click', () => {
                                             }
                                         });
                                         if (!isLegal) return alertModal(`第${illegalHWs.join(', ')}項作業超過100個字元!`);
-
+                                        let loading = loadingModal()
                                         content = JSON.stringify(content)
 
                                         const updatesData = { content };
@@ -146,6 +178,7 @@ $('.find-hw-with-id').on('click', () => {
                                             alertModal("錯誤: " + error.message);
                                             console.error("Error updating homework list:", error);
                                         }
+                                        loading.hide();
                                     }
                                 }, '不確'
                             ])
@@ -154,17 +187,21 @@ $('.find-hw-with-id').on('click', () => {
                     {
                         text: "刪除",
                         onclick: async () => {
+                            let loading = loadingModal()
                             const homeworkRef = ref(db, `homework_lists/${homeworkId}`);
                             try {
                                 await remove(homeworkRef);
                                 await remove(ref(db, 'users/' + auth.currentUser.uid + '/ids/' + homeworkId))
                                 console.log("Homework list deleted successfully:", homeworkId);
                                 updateDayAndSave()
+                                $(`.user-id-list div[data-id="${homeworkId}"]`).remove()
+                                if (!$('.user-id-list *').length) $('.user-id-list').removeClass("show")
                                 alertModal('已刪除聯絡簿')
                             } catch (error) {
                                 alertModal('錯誤: ' + error.message)
                                 console.error("Error deleting homework list:", error);
                             }
+                            loading.hide()
                         }
                     },
                     {
@@ -173,20 +210,23 @@ $('.find-hw-with-id').on('click', () => {
                             $('.cloud-hw-list.modal').removeClass('show')
                             preview(homeworkData)
                         }
-                    }
+                    }, '離開'
                 ])
+                loading.hide()
                 return;
             }
             $('.cloud-hw-list.modal').removeClass('show')
             preview(homeworkData)
             console.log(`Homework list found with ID ${homeworkId}:`, data);
+            loading.hide()
         } else {
             alertModal('沒有擁有這個代碼的作業!')
             console.log(`No homework list found with ID: ${homeworkId}`);
+            loading.hide()
         }
     }).catch(error => {
         alertModal('錯誤: ' + error.message);
         console.error(error)
+        loading.hide()
     })
-})
-
+}

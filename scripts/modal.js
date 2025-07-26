@@ -20,8 +20,6 @@ export const alertModal = (text, options) => {
         b.remove()
         b = document.createElement('div')
         b.classList.add('buttons')
-        b.style.display = 'flex'
-        b.style.justifyContent = 'space-around'
         options.forEach(e => {
             let eb = document.createElement('button')
             if (typeof e === 'string' || e instanceof String) {
@@ -54,3 +52,11 @@ export const alertModal = (text, options) => {
     setTimeout(() => modal.classList.add("show"), 1)
 }
 
+export const loadingModal = () => {
+    $('.loading-modal').addClass('show')
+    return {
+        hide: () => {
+            $('.loading-modal').removeClass('show')
+        }
+    }
+}
