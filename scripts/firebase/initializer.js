@@ -2,6 +2,7 @@ import { alertModal } from "../modal.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app-check.js";
 import {
     signInWithEmailAndPassword,
     signOut,
@@ -11,6 +12,7 @@ import {
     sendEmailVerification,
     sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+import { getAI, getGenerativeModel, GoogleAIBackend } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-ai.js";
 
 
 const firebaseConfig = {
@@ -28,6 +30,13 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getDatabase(app);
 const auth = getAuth(app);
+const appCheck = initializeAppCheck(app, {
+    provider: new ReCaptchaEnterpriseProvider('6LfkRJkrAAAAAN7wDDtXfMgJ8LT6cymMFUNdT_oN'),
+    isTokenAutoRefreshEnabled: true
+});
+
+const ai = getAI(app, { backend: new GoogleAIBackend() });
+const model = getGenerativeModel(ai, { model: "gemini-2.5-flash" });
 
 let currentUser = null;
 
@@ -37,7 +46,7 @@ onAuthStateChanged(auth, (user) => {
         user.reload().then(() => {
             $('.logout').attr('hidden', false)
             $('.login').attr('hidden', true)
-            $('#uid-display').text(`郵件: ${user.email}` + (user.emailVerified? "":" (尚未驗證)"))
+            $('#uid-display').text(`郵件: ${user.email}` + (user.emailVerified ? "" : " (尚未驗證)"))
         })
     } else {
         $('.logout').attr('hidden', true)
@@ -95,7 +104,14 @@ const createAccount = async (email, password) => {
     }
 }
 
+const promptAI = async (prompt, onFinish = (text) => console.log('AI response:')) => {
+    const result = await model.generateContent(prompt);
 
+    const response = result.response;
+    const text = await response.text();
+    onFinish(text)
+    return text;
+}
 
 let emailInput = $('#email-input')
 let passwordInput = $("#password-input")

@@ -308,7 +308,7 @@ if (window.location.toString() === "https://gamingdimigd.github.io/HWT-BETA/" ||
     }
 ])
 
-import { app, analytics, auth, db } from "./db/initializer.js"
-import {} from "./db/upload.js"
+import { app, analytics, auth, db } from "./firebase/initializer.js"
+import {} from "./firebase/upload.js"
 
 if (app, analytics, auth, db) console.log('DB loaded!')
