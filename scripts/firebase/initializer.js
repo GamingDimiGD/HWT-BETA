@@ -40,6 +40,7 @@ const model = getGenerativeModel(ai, { model: "gemini-2.5-flash" });
 
 let currentUser = null;
 
+
 onAuthStateChanged(auth, (user) => {
     currentUser = user;
     if (user) {
@@ -104,15 +105,6 @@ const createAccount = async (email, password) => {
     }
 }
 
-const promptAI = async (prompt, onFinish = (text) => console.log('AI response:')) => {
-    const result = await model.generateContent(prompt);
-
-    const response = result.response;
-    const text = await response.text();
-    onFinish(text)
-    return text;
-}
-
 let emailInput = $('#email-input')
 let passwordInput = $("#password-input")
 
@@ -140,8 +132,8 @@ $('.reset-password').on('click', () => {
     alertModal("確定")
 })
 
-export { app, db, auth, loginUser, logoutUser, currentUser, analytics, createAccount };
-
+export { app, db, auth, loginUser, logoutUser, currentUser, analytics, createAccount, ai, model };
+import { promptAI } from "./ai.js";
 addEventListener("DOMContentLoaded", () => {
     $('.loading-screen')[0].style.height = 0
     $('.loading-screen h1')[0].style.opacity = 0

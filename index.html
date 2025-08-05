@@ -14,7 +14,8 @@
     <script src="https://kit.fontawesome.com/fbd704794c.js" crossorigin="anonymous"></script>
     <meta name="google-site-verification" content="lmqOyZl2ZCg2ATRUYIP1qIZ1adBDBNPqyu3do0aHNjo" />
     <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
-    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfkRJkrAAAAAN7wDDtXfMgJ8LT6cymMFUNdT_oN"></script>
+    <script
+        src="https://www.google.com/recaptcha/enterprise.js?render=6LfkRJkrAAAAAN7wDDtXfMgJ8LT6cymMFUNdT_oN"></script>
 
     <meta name="description" content="抄聯絡簿神器是一個很好用的一個工具，可以取代使用黑板而用打字的方式來寫出今天有的作業。">
     <meta name="keywords" content="聯絡簿, 抄聯絡簿, 神器, 抄聯絡簿神器, 作業, 抄">
@@ -242,18 +243,19 @@
             <button class="get-id-list">你的代碼</button>
             <button class="open-upload-modal" onclick="$('.upload-hw-list.modal').addClass('show')">上傳聯絡簿</button>
             <button class="find-hw-with-id">輸入代碼</button>
+            <button onclick="$('.ai-hw.modal').addClass('show')">AI出作業</button>
         </div>
         <button class="out">離開</button>
     </div>
     <div class="upload-hw-list modal">
         <div class="content">
             <h1>上傳聯絡簿</h1>
-            <p class="warning">⚠️你的聯絡簿的內容*任何擁有代碼的人*都看得到它，請勿放任何私人資訊。</p>
+            <p class="warning">⚠️你的聯絡簿的內容<b class="red warning">任何擁有代碼的人</b>都看得到它，請勿放任何私人資訊。</p>
             <button class="upload-hw">上傳聯絡簿</button>
         </div>
         <button class="out">離開</button>
     </div>
-    
+
     <div class="account-info modal">
         <div class="content">
             <h1>帳號</h1>
@@ -267,11 +269,21 @@
         <div class="content">
             <h1>你的代碼</h1>
             <div class="user-id-list">
-                
+
             </div>
         </div>
         <button class="out">離開</button>
     </div>
+    <div class="ai-hw modal">
+        <div class="content">
+            <h1>AI出作業</h1>
+            <textarea name="AI出作業" id="ai-prompt" placeholder="超過150字的部分會被切掉 (選填)"></textarea>
+            <button class="send-ai-prompt">傳送(含紀錄與目前聯絡簿)</button>
+            <button class="send-ai-prompt-without-history">傳送(只含目前聯絡簿)</button>
+        </div>
+        <button class="out">離開</button>
+    </div>
+
 
 </body>
 

@@ -2,6 +2,7 @@ import { homeworkList, hwt, updateDayAndSave } from "./script.js";
 const defaultActions = [...document.querySelectorAll('select#type option')]
 const defaultSubjects = [...document.querySelectorAll("select#subject option")]
 const defaultBookTypes = [...document.querySelectorAll("select#choose-book-type option")]
+export { defaultActions, defaultSubjects, defaultBookTypes }
 
 const type = $('select#type'), subject = $("select#subject"), bookType = $("select#choose-book-type"),
 typeDisplay = $('#c-type-display'), subjectDisplay = $('#c-subject-display'), bookTypeDisplay = $('#c-book-type-display')

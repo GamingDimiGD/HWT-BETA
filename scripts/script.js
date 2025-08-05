@@ -8,6 +8,7 @@ const emptySave = {
     options: {},
     customActions: [], customSubjects: [], customBookTypes: [],
     textSize: 1,
+    history: [],
 }
 
 $.each($('.option-display div input'), (i, e) => {
@@ -16,6 +17,7 @@ $.each($('.option-display div input'), (i, e) => {
 })
 
 export let hwt = $.jStorage.get("HWT") || emptySave
+hwt.history.slice(-150)
 
 if (Object.keys(hwt).length < Object.keys(emptySave).length) {
     Object.keys(emptySave).forEach(key => {
@@ -120,7 +122,14 @@ const initOptionModal = (hwI) => {
             {
                 text: '確定',
                 onclick: () => {
-                    homeworkList = homeworkList.filter((hw) => hw.text !== hwText)
+                    let currentHW = homeworkList[hwI]
+                    hwt.history.push({
+                        text: currentHW.text,
+                        color: currentHW.color,
+                        timestamp: Date.now(),
+                        action: 'DELETE'
+                    })
+                    homeworkList = homeworkList.filter((hw) => hw.text !== currentHW.text)
                     $('.hw-container').empty();
                     $.jStorage.set('hw', homeworkList)
                     homeworkList.forEach((hw) => addHW(hw))
@@ -142,16 +151,20 @@ const initOptionModal = (hwI) => {
         $('.save-btn')[0].onclick = () => {
             let input = $('.edit-input').val().trim()
             if (!input) return alert('請在裡面打東西!');
-            if (homeworkList.find((hw) => hw.text === input)) return alert('不可以重複!');
+            if (homeworkList.find((hw) => hw.text === input)) return alertModal('不可以重複!');
             if (hwt.options['to全形']) {
                 to全形.forEach(char => {
                     input = input.replaceAll(char.i, char.o)
                 })
             }
-            if (homeworkList.find((hw) => hw.text === input)) {
-                return $('.edit-hw').removeClass('show')
-            }
-            homeworkList[hwI].text = input
+            let currentHW = homeworkList[hwI]
+            currentHW.text = input
+            hwt.history.push({
+                text: input,
+                color: currentHW.color,
+                timestamp: Date.now(),
+                action: 'UPDATE'
+            })
             $('.hw-container').empty();
             $.jStorage.set('hw', homeworkList)
             homeworkList.forEach((hw) => addHW(hw))
@@ -163,7 +176,14 @@ const initOptionModal = (hwI) => {
     $('.color').val(homeworkList[hwI].color)
     $(`.color`).on('change', () => {
         let color = $(`.color`).val()
-        homeworkList[hwI].color = color
+        let currentHW = homeworkList[hwI]
+        currentHW.color = color
+        hwt.history.push({
+            text: currentHW.text,
+            color,
+            timestamp: Date.now(),
+            action: 'UPDATE'
+        })
         $.jStorage.set('hw', homeworkList)
         $(`.hw[--data-index="${hwI}"]`).css('color', color)
     })
@@ -223,6 +243,12 @@ const addInput = (input) => {
     homeworkList.push({
         text: input,
         color: '#ffffff',
+    })
+    hwt.history.push({
+        text: input,
+        color: '#ffffff',
+        timestamp: Date.now(),
+        action: 'WRITE'
     })
     $.jStorage.set('hw', homeworkList)
     addHW(input)
@@ -309,6 +335,6 @@ if (window.location.toString() === "https://gamingdimigd.github.io/HWT-BETA/" ||
 ])
 
 import { app, analytics, auth, db } from "./firebase/initializer.js"
-import {} from "./firebase/upload.js"
+import { } from "./firebase/upload.js"
 
 if (app, analytics, auth, db) console.log('DB loaded!')

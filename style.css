@@ -403,3 +403,17 @@ details {
         transform: rotate(360deg);
     }
 }
+
+.red {
+    color: #f00;
+}
+
+textarea#ai-prompt {
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.send-ai-prompt, .send-ai-prompt-without-history {
+    font-size: 1rem;
+    margin: 3px;
+}
