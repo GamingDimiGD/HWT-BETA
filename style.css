@@ -137,7 +137,13 @@ br {
 }
 
 .input-container {
-    padding: 5px;
+    margin: 5px;
+    padding: 7px;
+    display: flex;
+    gap: 10px;
+    height: min-content;
+    border-radius: 5px;
+    background: #003c003c;
 }
 
 .hw button {

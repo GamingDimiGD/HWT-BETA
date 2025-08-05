@@ -1,7 +1,9 @@
 import { alertModal } from "../modal.js"
-import { hwt, addHW, homeworkList } from "../script.js"
+import { hwt, addHW, homeworkList, updateDayAndSave } from "../script.js"
 export const updateHistory = () => {
     hwt.history.sort((a, b) => b.timestamp - a.timestamp)
+    hwt.history = hwt.history.slice(0, 150)
+    updateDayAndSave()
     $('.history-list').empty()
     hwt.history.forEach(h => {
         let ele = $(`<div class="action">

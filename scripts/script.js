@@ -17,7 +17,6 @@ $.each($('.option-display div input'), (i, e) => {
 })
 
 export let hwt = $.jStorage.get("HWT") || emptySave
-hwt.history.slice(-150)
 
 if (Object.keys(hwt).length < Object.keys(emptySave).length) {
     Object.keys(emptySave).forEach(key => {
@@ -277,6 +276,14 @@ $('.clear').on('click', () => {
         {
             text: '確定',
             onclick: () => {
+                homeworkList.forEach((hw) => {
+                    hwt.history.push({
+                        text: hw.text,
+                        color: hw.color,
+                        timestamp: Date.now(),
+                        action: 'DELETE'
+                    })
+                })
                 $.jStorage.deleteKey('hw');
                 $('.hw-container').empty();
                 homeworkList = [];

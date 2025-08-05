@@ -1,8 +1,9 @@
 import { alertModal, loadingModal } from "../modal.js";
 import { auth, model } from "./initializer.js";
-import { addHW, homeworkList, hwt } from "../script.js";
+import { addHW, homeworkList, hwt, updateDayAndSave } from "../script.js";
 import { defaultActions, defaultBookTypes, defaultSubjects } from "../editFE.js";
 import { toVerticalWords } from "../options/regexAndEscapeChar.js";
+import { updateHistory } from "../options/history.js";
 
 export const promptAI = async (prompt, onFinish = (text) => console.log('AI response:')) => {
     if (!prompt) return alertModal('請傳訊息!')
@@ -75,8 +76,9 @@ const appendHW = (...hwList) => {
 }
 
 const sendToAI = (withHistory = true) => {
-    let h = withHistory?JSON.stringify(hwt.history):'[]'
+    let h = withHistory ? JSON.stringify(hwt.history) : '[]'
     let input = $("#ai-prompt").val().slice(0, 150)
+    updateHistory()
     if (!input) input = "空"
     let loading = loadingModal()
     let a = "作業(不用加任何文字在前面), " + defaultActions.map(a => a.value).filter(a => a).join(', ') + ", " + hwt.customActions.join(', ') + '\n'
