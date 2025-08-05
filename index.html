@@ -182,6 +182,9 @@
                 <button onclick="$('.edit-fast-enter').addClass('show')">
                     自訂快速輸入
                 </button>
+                <button class="history-button" onclick="$('.history').addClass('show')">
+                    作業動作紀錄
+                </button>
                 <b class="text-size-display">文字大小:</b>
                 <input type="range" class="change-text-size" min="0.01" max="5" step="0.01">
                 <div class="step-buttons-ts">
@@ -283,7 +286,46 @@
         </div>
         <button class="out">離開</button>
     </div>
-
+    <div class="history modal">
+        <div class="content">
+            <h1>前150個動作紀錄</h1>
+            <p class="warning">你的紀錄不會被上傳到網路上或被賣出去 (AI出作業的話我就不確定了)</p>
+            <div class="history-list">
+                
+                <div class="action">
+                    <div class="text">
+                        文字文字文字文字
+                    </div>
+                    <div class="action-actions">
+                        <div class="action-type delete"><i class="fa-solid fa-trash" aria-hidden="true"></i></div>
+                        <button class="delete-action"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
+                        <button class="re-add"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="action">
+                    <div class="text">
+                        文字文字文字文字
+                    </div>
+                    <div class="action-actions">
+                        <div class="action-type write"><i class="fa-solid fa-plus" aria-hidden="true"></i></div>
+                        <button class="delete-action"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
+                        <button class="re-add"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="action">
+                    <div class="text">
+                        文字文字文字文字
+                    </div>
+                    <div class="action-actions">
+                        <div class="action-type update"><i class="fa-solid fa-pen" aria-hidden="true"></i></div>
+                        <button class="delete-action"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
+                        <button class="re-add"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="out">離開</button>
+    </div>
 
 </body>
 

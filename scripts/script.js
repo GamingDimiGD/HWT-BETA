@@ -292,6 +292,8 @@ $('.clear').on('click', () => {
     ])
 })
 
+$('.history-button').on('click', updateHistory)
+
 let isPageRange = true
 $('.custom-range').hide()
 
@@ -336,5 +338,6 @@ if (window.location.toString() === "https://gamingdimigd.github.io/HWT-BETA/" ||
 
 import { app, analytics, auth, db } from "./firebase/initializer.js"
 import { } from "./firebase/upload.js"
+import { updateHistory } from "./options/history.js";
 
 if (app, analytics, auth, db) console.log('DB loaded!')
