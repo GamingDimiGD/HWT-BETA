@@ -76,20 +76,26 @@ const appendHW = (...hwList) => {
 }
 
 const sendToAI = (withHistory = true) => {
-    let h = withHistory ? JSON.stringify(hwt.history) : '[]'
-    let input = $("#ai-prompt").val().slice(0, 150)
-    updateHistory()
-    if (!input) input = "空"
-    let loading = loadingModal()
-    let a = "作業(不用加任何文字在前面), " + defaultActions.map(a => a.value).filter(a => a).join(', ') + ", " + hwt.customActions.join(', ') + '\n'
-    let b = defaultBookTypes.map(a => a.value).filter(a => a).join(", ") + ", " + hwt.customBookTypes.join(', ') + '\n'
-    let c = defaultSubjects.map(a => a.value).filter(a => a).join(", ") + ", " + hwt.customSubjects.join(', ') + '\n'
-    promptAI(promptPart1 + h + promptPart2 + input + promptPart3 + a + b + c + promptPart4 + JSON.stringify(homeworkList) + promptPart5, (r) => {
+    try {
+        let h = withHistory ? JSON.stringify(hwt.history) : '[]'
+        let input = $("#ai-prompt").val().slice(0, 150)
+        updateHistory()
+        if (!input) input = "空"
+        let loading = loadingModal()
+        let a = "作業(不用加任何文字在前面), " + defaultActions.map(a => a.value).filter(a => a).join(', ') + ", " + hwt.customActions.join(', ') + '\n'
+        let b = defaultBookTypes.map(a => a.value).filter(a => a).join(", ") + ", " + hwt.customBookTypes.join(', ') + '\n'
+        let c = defaultSubjects.map(a => a.value).filter(a => a).join(", ") + ", " + hwt.customSubjects.join(', ') + '\n'
+        promptAI(promptPart1 + h + promptPart2 + input + promptPart3 + a + b + c + promptPart4 + JSON.stringify(homeworkList) + promptPart5, (r) => {
+            loading.hide()
+            console.log(r)
+            $('.modal').removeClass('show')
+            appendHW(...JSON.parse(r))
+        })
+    } catch (error) {
+        alertModal('錯誤: ' + error.message)
         loading.hide()
-        console.log(r)
-        $('.modal').removeClass('show')
-        appendHW(...JSON.parse(r))
-    })
+        console.error(error)
+    }
 }
 
 $('.send-ai-prompt').on("click", sendToAI)

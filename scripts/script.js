@@ -47,6 +47,10 @@ $.each($('.out'), (_, b) => {
     })
 })
 
+if (hwt.options['show-welcome']) {
+    $('.welcome.modal').addClass('show')
+}
+
 updateCustomFE()
 updateTextSize()
 
@@ -58,14 +62,20 @@ export const updateDayAndSave = () => {
         const day = new Date().getDay()
         return ['日', '一', '二', '三', '四', '五', '六'][day]
     }
-
+    
     $('.day').html(getDay())
-
+    
     $.jStorage.set("HWT", hwt)
-
+    
 }
 
 updateDayAndSave()
+$('.stop-showing').on("click", () => {
+    $('.welcome.modal').removeClass('show')
+    $('#show-welcome').attr('checked', false)
+    hwt.options['show-welcome'] = false
+    updateDayAndSave()
+})
 
 setInterval(updateDayAndSave, 10000)
 

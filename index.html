@@ -17,15 +17,15 @@
     <script
         src="https://www.google.com/recaptcha/enterprise.js?render=6LfkRJkrAAAAAN7wDDtXfMgJ8LT6cymMFUNdT_oN"></script>
 
-    <meta name="description" content="抄聯絡簿神器是一個很好用的一個工具，可以取代使用黑板而用打字的方式來寫出今天有的作業。">
-    <meta name="keywords" content="聯絡簿, 抄聯絡簿, 神器, 抄聯絡簿神器, 作業, 抄">
-    <meta name="author" content="遊戲迪米">
 
     <link rel="stylesheet" href="style.css">
     <script src="scripts/script.js" defer type="module"></script>
 
     <link rel="icon" href="img/HWT.png" type="image/png">
     <title>HWT 抄聯絡簿神器</title>
+    <meta name="description" content="抄聯絡簿神器是一個很好用的一個工具，可以取代使用黑板而用打字的方式來寫出今天有的作業。">
+    <meta name="keywords" content="聯絡簿, 抄聯絡簿, 神器, 抄聯絡簿神器, 作業, 抄">
+    <meta name="author" content="遊戲迪米">
 </head>
 
 <body>
@@ -39,6 +39,16 @@
         <div class="content">
             <img src="./img/HWT.png" alt="載入中" width="100">
         </div>
+    </div>
+    <div class="welcome modal">
+        <div class="content">
+            <h1>歡迎!</h1>
+            <p>抄聯絡簿神器是一個很好用的一個工具，可以取代使用黑板而用打字的方式來寫出今天有的作業。</p>
+            <p>欲增加作業項目，請到右方的「輸入作業」打字，並按下「+」(或按下Enter鍵)。</p>
+            <p>欲察看其他好玩的東西，像是雲端聯絡簿，請看左下角按鈕</p>
+            <button class="stop-showing">關閉並不要再顯示</button>
+        </div>
+        <button class="out">離開</button>
     </div>
     <h1 class="today">民國<b class="num y">X</b>年<b class="num m">X</b>月<b class="num d">X</b>日 星期<b class="num day">X</b>
     </h1>
@@ -54,7 +64,7 @@
         <button class="exit-preview" hidden>
             退出預覽
         </button>
-        <button class="cloud-hw-lists beta" onclick="$('.cloud-hw-list').addClass('show')">
+        <button class="cloud-hw-lists" onclick="$('.cloud-hw-list').addClass('show')">
             <b class="unbold">
                 雲端聯絡簿
             </b>
@@ -179,6 +189,10 @@
                         <i class="fa-solid fa-circle-question"></i>
                     </button>
                 </div>
+                <div>
+                    <input type="checkbox" id="show-welcome" name="show-welcome" data-default="true" autocomplete="off">
+                    <b>歡迎小視窗</b>
+                </div>
                 <button onclick="$('.edit-fast-enter').addClass('show')">
                     自訂快速輸入
                 </button>
@@ -280,6 +294,7 @@
     <div class="ai-hw modal">
         <div class="content">
             <h1>AI出作業</h1>
+            <p class="warning">使用的AI是Google AI，有時候會有點出問題</p>
             <textarea name="AI出作業" id="ai-prompt" placeholder="超過150字的部分會被切掉 (選填)"></textarea>
             <button class="send-ai-prompt">傳送(含紀錄與目前聯絡簿)</button>
             <button class="send-ai-prompt-without-history">傳送(只含目前聯絡簿)</button>
@@ -289,39 +304,10 @@
     <div class="history modal">
         <div class="content">
             <h1>前150個動作紀錄</h1>
-            <p class="warning">你的紀錄不會被上傳到網路上或被賣出去 (AI出作業的話我就不確定了)</p>
+            <p class="warning">你的紀錄不會被上傳到網路上或被賣出去 (給AI出作業的話我就不確定了)</p>
+            <p class="warning">順序: 越上面越新</p>
             <div class="history-list">
-                
-                <div class="action">
-                    <div class="text">
-                        文字文字文字文字
-                    </div>
-                    <div class="action-actions">
-                        <div class="action-type delete"><i class="fa-solid fa-trash" aria-hidden="true"></i></div>
-                        <button class="delete-action"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
-                        <button class="re-add"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
-                    </div>
-                </div>
-                <div class="action">
-                    <div class="text">
-                        文字文字文字文字
-                    </div>
-                    <div class="action-actions">
-                        <div class="action-type write"><i class="fa-solid fa-plus" aria-hidden="true"></i></div>
-                        <button class="delete-action"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
-                        <button class="re-add"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
-                    </div>
-                </div>
-                <div class="action">
-                    <div class="text">
-                        文字文字文字文字
-                    </div>
-                    <div class="action-actions">
-                        <div class="action-type update"><i class="fa-solid fa-pen" aria-hidden="true"></i></div>
-                        <button class="delete-action"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
-                        <button class="re-add"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
-                    </div>
-                </div>
+                無紀錄
             </div>
         </div>
         <button class="out">離開</button>

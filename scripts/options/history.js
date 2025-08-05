@@ -50,4 +50,5 @@ export const updateHistory = () => {
             $('.modal').removeClass('show')
         })
     })
+    if ($('.history-list *').length === 0) $('.history-list').text('無紀錄')
 }
