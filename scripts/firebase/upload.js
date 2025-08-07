@@ -98,6 +98,7 @@ $('.upload-hw').on('click', async () => {
             creatorUid: user.uid,
             timestamp: serverTimestamp()
         };
+        console.log(serverTimestamp())
         try {
             await set(newHomeworkRef, homeworkData);
             alertModal("已上傳聯絡簿! 請記下代碼:<pre>" + newHomeworkId + "</pre>");
