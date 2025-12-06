@@ -34,7 +34,7 @@ $('.get-id-list').on("click", () => {
         const list = Object.keys(snapshot.val())
         console.log(list)
         list.forEach(async key => {
-            let idDisplay = $('<div><pre></pre><button id="configure-hw"><i class="fa-solid fa-wrench"></i></button><button id="copy-hw"><i class="fa-regular fa-copy"></i></button></div><button id="copy-hw-link"><i class="fa-solid fa-link"></i></button></div>')
+            let idDisplay = $('<div><pre></pre><button id="configure-hw"><i class="fa-solid fa-wrench"></i></button><button id="copy-hw"><i class="fa-regular fa-copy"></i></button><button id="copy-hw-link"><i class="fa-solid fa-link"></i></button></div>')
             $('.user-id-list').append(idDisplay)
             idDisplay.find('pre').text(key)
             idDisplay.find('#configure-hw').on("click", () => findHWwithID(key))
