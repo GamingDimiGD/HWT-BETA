@@ -492,3 +492,7 @@ textarea#ai-prompt {
     background: #ffff8833;
     color: #979731;
 }
+
+.user-ids.modal .content {
+    max-width: 300px;
+}
