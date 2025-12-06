@@ -230,3 +230,13 @@ const findHWwithID = (homeworkId) => {
         loading.hide()
     })
 }
+
+const urlId = new URLSearchParams(window.location.hash.substring(1)).get('id');
+if (urlId) {
+    alertModal('即將載入代碼: <pre>' + urlId + '</pre>確定載入?', [
+        {
+            text: '確定',
+            onclick: () => findHWwithID(urlId.toUpperCase())
+        }, '取消'
+    ])
+}
