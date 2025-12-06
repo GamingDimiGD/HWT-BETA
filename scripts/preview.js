@@ -21,5 +21,6 @@ export const preview = (homeworkData) => {
     })
     $('.exit-preview').attr('hidden', false)
     $('.input-container').attr('hidden', true)
+    location.hash = ''
     toVerticalWords(homeworkData)
 }
