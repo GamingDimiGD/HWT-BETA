@@ -228,8 +228,7 @@ export const addHW = (hw) => {
     let eleText =
         `<div class="hw" --data-index="${hwI}" ><b class="num">${hwI + 1}.</b><b class="hw-text"></b><button class="hw-options" --data-index="${hwI}"><i class="fa-solid fa-gear" aria-hidden="true"></i></button></div>`
     $('.hw-container').append(eleText)
-    if (hwt.options['unsafe-input']) $(`.hw[--data-index="${hwI}"] .hw-text`).html(input)
-    else $(`.hw[--data-index="${hwI}"] .hw-text`).text(input)
+    $(`.hw[--data-index="${hwI}"] .hw-text`).text(input)
     $(`.hw-options[--data-index="${hwI}"]`).on('click', () => {
         $('.hw-options').addClass('show')
         initOptionModal(hwI)

@@ -16,7 +16,6 @@ const replaceEscapeCharWithElement = (char, eclass, a, hwDisplay, changeLineAtEn
     a = a.replaceLast(`\\${char}\\`, changeLineAtEnd ? '\n' : '')
     if (a.match(RegExp(`[\\s\\S]*?\\\\${char}(?!\\\\)`, 'gu'))) a = a.replace('\\' + char, changeLineAtStartIfTheresAnythingBefore ? '\n' : '')
     else a = a.replace('\\' + char, '')
-    if (hwt.options["unsafe-input"]) return hwDisplay.innerHTML += `<b class="${eclass} unbold">${a}</b>`;
     let b = document.createElement('b')
     b.innerHTML = a
     b.classList.add("unbold")
@@ -43,7 +42,6 @@ export const escapeChar = [
             a = a.replaceLast('\\v\\', '')
             if (a.match(/[\s\S]+\\v(?!\\)/gu)) a = a.replace('\\v', '\n')
             else a = a.replace('\\v', '')
-            if (hwt.options["unsafe-input"]) return hwDisplay.innerHTML += a;
             hwDisplay.append(a)
         },
     },
@@ -206,7 +204,6 @@ export const toVerticalWords = (homeworkData = homeworkList) => {
         // console.log(result)
         result.forEach((a, i) => {
             let init = () => {
-                if (hwt.options["unsafe-input"]) return hwDisplay.innerHTML += `<b class="num unbold">${a}</b>`;
                 let b = document.createElement('b');
                 b.innerText = a;
                 b.classList.add("num");
@@ -231,7 +228,6 @@ export const toVerticalWords = (homeworkData = homeworkList) => {
             } else if ((!(i % 2) && isFirstOneAMatch) || (i % 2 && !isFirstOneAMatch)) {
                 init()
             } else {
-                if (hwt.options["unsafe-input"]) return hwDisplay.innerHTML += a;
                 hwDisplay.append(a)
             }
         })

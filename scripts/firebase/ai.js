@@ -1,11 +1,11 @@
 import { alertModal, loadingModal } from "../modal.js";
 import { auth, model } from "./initializer.js";
-import { addHW, homeworkList, hwt, updateDayAndSave } from "../script.js";
+import { addHW, homeworkList, hwt } from "../script.js";
 import { defaultActions, defaultBookTypes, defaultSubjects } from "../editFE.js";
 import { toVerticalWords } from "../options/regexAndEscapeChar.js";
 import { updateHistory } from "../options/history.js";
 
-export const promptAI = async (prompt, onFinish = (text) => console.log('AI response:')) => {
+export const promptAI = async (prompt, onFinish = (text) => console.log('AI response: ' + text)) => {
     if (!prompt) return alertModal('請傳訊息!')
     if (!auth) return alertModal("要使用AI，請先登入!")
     const result = await model.generateContent(prompt);
